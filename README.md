@@ -94,6 +94,7 @@ changeTheme(theme: string) {
 
 ## El archivo app.component tendremos 2 botones para cambiar los themes
 `<p-button (click)="changeTheme('lara-light')" class="mr-3 cursor-pointer">`light`</p-button>`
+
 `<p-button (click)="changeTheme('lara-dark')" class="mr-3 cursor-pointer">`dark`</p-button>`
 
 ## En el mismo archivo he usado un MenuBar donde agrego los botones para cambiar de modo dia/noche puedes revisarlo
