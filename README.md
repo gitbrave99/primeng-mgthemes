@@ -1,27 +1,107 @@
-# PrimengmgThemes
+# CAMBIO DE THEME EN PRIMENG
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.6.
+## Se instala primeng y primeicons
+- npm install primeng primeicons
 
-## Development server
+## Se agregarn las dependencias de en archivo angular.json 
+```
+"styles": [
+            "src/styles.css",
+            "node_modules/primeicons/primeicons.css",
+            "node_modules/primeflex/primeflex.css",
+            "node_modules/primeng/resources/primeng.min.css",
+          ]
+```
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Se eligen los themes en este caso elegí 2
+- lara-dark-blue
+- lara-light-blue
 
-## Code scaffolding
+## Se crean los archivos dentro de la carpeta /SRC
+- theme-lara-dark-blue.scss 
+- theme-lara-light-blue.scss
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## En el archivo __**theme-lara-dark-blue.scss**__  agregamos el siguiente código
+- @import "primeng/resources/themes/lara-dark-blue/theme.css";
 
-## Build
+## En el archivo __**theme-lara-light-blue.scss**__  agregamos el siguiente código
+- @import "primeng/resources/themes/lara-light-blue/theme.css";
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-## Running unit tests
+## Se agregan los themes en el archivo angular.json
+```
+{
+  "input": "src/theme-lara-light-blue.scss",
+  "bundleName": "lara-light",
+  "inject": false
+},
+{
+  "input": "src/theme-lara-dark-blue.scss",
+  "bundleName": "lara-dark",
+  "inject": false
+}
+```
+## Quedando la configuracion
+```
+"styles": [
+            "src/styles.css",
+            "node_modules/primeicons/primeicons.css",
+            "node_modules/primeflex/primeflex.css",
+            "node_modules/primeng/resources/primeng.min.css",
+            {
+              "input": "src/theme-lara-light-blue.scss",
+              "bundleName": "lara-light",
+              "inject": false
+            },
+            {
+              "input": "src/theme-lara-dark-blue.scss",
+              "bundleName": "lara-dark",
+              "inject": false
+            }
+          ]
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Dentro de la carpeta /app agregamos un servicio llamado theme.service.ts que tendra el siguiente código
+```
+import { Inject, Injectable } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 
-## Running end-to-end tests
+@Injectable({
+    providedIn: 'root',
+})
+export class ThemeService {
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+    constructor(@Inject(DOCUMENT) private document: Document) {}
 
-## Further help
+    switchTheme(theme: string) {
+        let themeLink = this.document.getElementById('app-theme') as HTMLLinkElement;
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+        if (themeLink) {
+            themeLink.href = theme + '.css';
+        }
+    }
+}
+```
+## En el index agregarmos el siguiente link
+- `<link id="app-theme" rel="stylesheet" type="text/css" href="lara-dark.css">`
+
+## En el archivo app.ts agregamos una función para cambiar de datos
+```
+changeTheme(theme: string) {
+  this.themeService.switchTheme(theme);
+}
+```
+
+## El archivo app.component tendremos 2 botones para cambiar los themes
+`<p-button (click)="changeTheme('lara-light')" class="mr-3 cursor-pointer">`
+  light
+`</p-button>`
+`<p-button (click)="changeTheme('lara-dark')" class="mr-3 cursor-pointer">`
+  dark
+`</p-button>`
+
+## En el mismo archivo he usado un MenuBar donde agrego los botones para cambiar de modo dia/noche
+
+
+## Corre el proyecto con
+`ng serve`
